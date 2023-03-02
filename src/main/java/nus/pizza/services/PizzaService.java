@@ -41,6 +41,10 @@ public class PizzaService {
 
         totalCost *= pizza.getQuantity();
 
+        if (delivery == null){
+            System.out.println("delivery is null");
+        }
+
         if (delivery.getRush()){
             totalCost += 2;
         }

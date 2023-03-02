@@ -38,7 +38,7 @@ public class PizzaController {
 	}
 
     @PostMapping(path="/pizza")
-    public String getDeliveryPage(@Valid Pizza pizza, BindingResult result, Model model, HttpSession sess){
+    public String getDeliveryPage(@Valid Pizza pizza, BindingResult result, HttpSession sess, Model model){
 		//after selecting the pizza, size and qty
 		//to make following HTTP request to the backend
 		//POST /pizza
@@ -52,42 +52,43 @@ public class PizzaController {
 		//if any of the checks fail, return to homepage and throw error message
 
 		if (result.hasErrors()){
-			System.out.println("got error");
+			System.out.println("got error in getDeliveryPage");
 			return "index";
 		}
 
 		sess.setAttribute("pizza", pizza);
 
-		model.addAttribute("delivery", new DeliveryDetails());
+
+		model.addAttribute("deliveryDetails", new DeliveryDetails());
 
 		return "deliveryAddress";
 
 	}
 
 	@PostMapping(path="/pizza/ordersuccess")
-    public String getOrderSuccessPage(@Valid DeliveryDetails details, BindingResult result, Model model, HttpSession sess){
+    public String getOrderSuccessPage(@Valid DeliveryDetails details, BindingResult result, HttpSession sess, Model model){
 		//need to build Json using JsonObjectBuilder, then store in redis
 		//need method call to get data from redis (to be displayed on screen with RestController)
-		System.out.println("in ordersuccess");
+		
 
 		if (result.hasErrors()){
-			System.out.println("got error");
+			System.out.println("got error in getOrderSuccessPage");
 			return "deliveryAddress";
 		}
 
 		Pizza thisPizza = (Pizza) sess.getAttribute("pizza");
-		DeliveryDetails thisDelivery = (DeliveryDetails) sess.getAttribute("delivery");
-		Double totalCost=pizzaService.calculateCost(thisPizza, thisDelivery);
-		Double oriCost=totalCost-thisDelivery.getTip()-(thisDelivery.getRush()?2:0);
+		// DeliveryDetails thisDelivery = (DeliveryDetails) sess.getAttribute("deliveryDetails");
+		Double totalCost=pizzaService.calculateCost(thisPizza, details);
+		Double oriCost=totalCost-details.getTip()-(details.getRush()?2:0);
 		String uuid=pizzaService.generateUUID();
-		orderRepo.addOrderinJson(thisPizza,thisDelivery, uuid, totalCost);
+		orderRepo.addOrderinJson(thisPizza, details, uuid, totalCost);
 
 
-		model.addAttribute("pizza", thisPizza);
-		model.addAttribute("delivery", thisDelivery);
-		model.addAttribute("Controllertotalcost", totalCost);
-		model.addAttribute("Controlleroricost", oriCost);
-		model.addAttribute("Controlleruuid", uuid);
+		model.addAttribute("pizza", thisPizza); //<-- this is a whole class
+		model.addAttribute("delivery", details);//<-- this is a whole class
+		model.addAttribute("Controllertotalcost", totalCost);//<-- this is a variable
+		model.addAttribute("Controlleroricost", oriCost);//<-- this is a variable
+		model.addAttribute("Controlleruuid", uuid);//<-- this is a variable
 
 		
 		//Delivery details
@@ -98,8 +99,10 @@ public class PizzaController {
 		//Tip
 		//total cost
 		
-		return "ordersuccess";
+		return "orderSuccess";
 	}
+
+
 	
 
     

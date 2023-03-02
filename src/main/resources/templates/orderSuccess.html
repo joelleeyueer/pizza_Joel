@@ -13,7 +13,7 @@
     </div>
 
     <h3>Order ID:</h3>
-    <a data-th-href="@{/ordersuccess/{incomingId}(incomingId=${Controlleruuid})}">
+    <a data-th-href="@{/pizza/ordersuccess/{id}(id=${Controlleruuid})}">
         <code data-th-text="${Controlleruuid}"></code>
     </a>
 </br>
@@ -29,8 +29,7 @@
 
 </br>
     <a>
-        <br data-th-if="delivery.rush"></br>
-            <label>Rush: $2</label>
+        <label data-th-if="${delivery.rush}">Rush: $2</label>
     </a>
 </br>
     <h3>Tip:</h3>
@@ -43,7 +42,7 @@
         <label data-th-text="${Controllertotalcost}"></label>
     </a>
 
-    <button type="button" onclick="location.href='/index';">Back To Home</button>
+    <button type="button" onclick="location.href='/index.html';">Back To Home</button>
     
 </body>
 </html>

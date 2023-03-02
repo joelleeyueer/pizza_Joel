@@ -1,5 +1,8 @@
 package nus.pizza.repositories;
 
+import java.io.Reader;
+import java.io.StringReader;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -8,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonObjectBuilder;
+import jakarta.json.JsonReader;
 import nus.pizza.models.DeliveryDetails;
 import nus.pizza.models.Pizza;
 
@@ -34,8 +38,15 @@ public class OrderRepo {
         .add("total",totalCost);
 
         JsonObject jo = orderBuilder.build();
-        template.opsForList().rightPush("ListByUUID",uuid);
-        template.opsForHash().put("OrderDetails","ListByUUID",jo);
+        template.opsForValue().set(uuid, jo.toString());
+    }
+
+    public JsonObject getOrderinJson(String uuid){
+        String jsonPayload = template.opsForValue().get(uuid);
+        JsonReader reader = Json.createReader(new StringReader(jsonPayload));
+		JsonObject obj = reader.readObject();
+        
+        return obj;
     }
     
 }
