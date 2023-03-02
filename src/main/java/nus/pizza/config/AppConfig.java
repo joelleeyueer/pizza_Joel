@@ -1,6 +1,5 @@
 package nus.pizza.config;
 
-import java.util.Optional;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -32,7 +31,6 @@ public class AppConfig {
 	@Value("${spring.redis.password}")
 	private String redisPassword;
 
-	@Bean("pizza")
 	public RedisTemplate<String, String> createRedisTemplate() {
 
 		final RedisStandaloneConfiguration config = new RedisStandaloneConfiguration(redisHost, redisPort);

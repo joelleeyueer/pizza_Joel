@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery Address</title>
+</head>
+<body>
+
+    <h1>Order Form</h1>
+    <form th:action="@{/pizza/ordersuccess}" th:object="${delivery}" method="post">
+    	<!-- <p>Name: <input type="text" th:field="*{name}" /></p> -->
+        <p>Delivery Address: <input type="text" th:field="*{address}" /></p>
+		<p>Phone Number: <input type="text" th:field="*{phone}" /></p>
+		<p>Rush:<input type="checkbox" th:field="*{rush}" /></p>
+		<p>Tip: <input type="text" th:field="*{tip}" /></p>
+		<p>Comments: <textarea th:field="*{comments}" class="form-control" rows="4" cols="50" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+		</p>
+
+		<button type="button" onclick="location.href='/index.html';">Cancel Order</button>
+		<button type="submit">Place Order</button>
+	</form>
+
+</body>
+</html>

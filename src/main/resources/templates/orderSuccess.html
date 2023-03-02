@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Successful!</title>
+</head>
+<body>
+
+    <div class="title">
+        <h2>Your order is on the way!</h2>
+    </div>
+
+    <h3>Order ID:</h3>
+    <a data-th-href="@{/ordersuccess/{incomingId}(incomingId=${Controlleruuid})}">
+        <code data-th-text="${Controlleruuid}"></code>
+    </a>
+</br>
+    <h3>Delivery address:</h3>
+    <a>
+        <label data-th-text="${delivery.address}"></label>
+    </a>
+</br>
+    <h3>Pizza Cost:</h3>
+    <a>
+        <label data-th-text="${Controlleroricost}"></label>
+    </a>
+
+</br>
+    <a>
+        <br data-th-if="delivery.rush"></br>
+            <label>Rush: $2</label>
+    </a>
+</br>
+    <h3>Tip:</h3>
+    <a>
+        <label data-th-text="${delivery.tip}"></label>
+    </a>
+</br>
+    <h3>Total Cost:</h3>
+    <a>
+        <label data-th-text="${Controllertotalcost}"></label>
+    </a>
+
+    <button type="button" onclick="location.href='/index';">Back To Home</button>
+    
+</body>
+</html>
